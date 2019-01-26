@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Profile</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin-top: 50px">
+    <h3>Edit Profile</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Apply Profile Changes</button>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+<div class="container" style="margin-top: 50px">
+    <p align="center">
+        Hello <a href="{% url 'registration:view_profile' %}">{{ user.username }}</a>. You are currently logged in.
+    </p>
+</div>
+{% else %}
+<div class="container" style="margin-top: 50px">
+    <p align="center">
+        You are not logged in.
+    </p>
+    <p align="center">
+        <a href="{% url 'registration:login' %}">Login</a> or <a href="{% url 'registration:register' %}">register</a>.</p>
+</div>
+{% endif %}
+
+{% endblock %}

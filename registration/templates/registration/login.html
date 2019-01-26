@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Login Page</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin-top: 50px">
+    {% if not user.is_authenticated %}
+    <h3>Authenticate</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <p>If you do not have log in credentials, please <a href="{% url 'registration:register' %}">register</a>.</p>
+    <p>If you have forgotten your password, you can <a href="{% url 'registration:reset_password' %}">reset it here</a>.</p>
+    {% else %}
+    <p align="center">You are already logged in with username {{ user.username }}.</p>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+

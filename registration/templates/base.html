@@ -1,0 +1,58 @@
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'registration/css/bootstrap.min.css' %}">
+
+    {% block head %}
+    <title>Calderón</title>
+    {% endblock %}
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <a class="navbar-brand" href="{% url 'registration:index' %}">
+            Calderón
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mx-auto">
+                <li>
+                    Welcome <a href="{%url 'registration:view_profile' %}">{{ user.username }}</a>
+                </li>
+                <li>
+                    :::
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">logout</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav mx-auto">
+                <li>
+                    <a href="{% url 'registration:login' %}">Login</a>
+                </li>
+                <li>
+                    :::
+                </li>
+                <li>
+                    <a href="{% url 'registration:register' %}">Register</a>
+                </li>
+            </ul>
+            {% endif %}
+
+        </div>
+
+    </nav>
+</div>
+
+{% block body %}ç
+
+{% endblock %}
+
+</body>
+</html>
