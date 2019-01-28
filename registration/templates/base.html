@@ -1,11 +1,9 @@
 {% load static %}
 
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'registration/css/bootstrap.min.css' %}">
-
     {% block head %}
     <title>Calderón</title>
     {% endblock %}
@@ -15,42 +13,32 @@
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        <a class="navbar-brand" href="{% url 'registration:index' %}">
+        <a class="navbar-brand" href="{% url 'query:index' %}">
+            <img src="{% static 'registration/images/calderon.jpg' %}" width="50" height="50" alt="">
             Calderón
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
-            {% if user.is_authenticated %}
             <ul class="navbar-nav mx-auto">
-                <li>
-                    Welcome <a href="{%url 'registration:view_profile' %}">{{ user.username }}</a>
+                <li class="{% if nbar == 'index' %}nav-item active{% endif %}">
+                    <a class="nav-link" href="{% url 'query:index' %}">Home</a>
                 </li>
-                <li>
-                    :::
+                <li class="{% if nbar == 'query' %}nav-item active{% endif %}">
+                    <a class="nav-link" href="{% url 'query:query' %}">Query</a>
                 </li>
-                <li>
-                    <a href="{% url 'logout' %}">logout</a>
+                <li class="{% if nbar == 'about' %}nav-item active{% endif %}">
+                    <a class="nav-link" href="{% url 'query:about' %}">About</a>
                 </li>
             </ul>
-            {% else %}
-            <ul class="navbar-nav mx-auto">
-                <li>
-                    <a href="{% url 'registration:login' %}">Login</a>
-                </li>
-                <li>
-                    :::
-                </li>
-                <li>
-                    <a href="{% url 'registration:register' %}">Register</a>
-                </li>
-            </ul>
-            {% endif %}
-
         </div>
-
+        {% if user.is_authenticated %}
+        <h9>Welcome <a href="{%url 'registration:view_profile' %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">logout</a></h9>
+        {% else %}
+        <h9><a href="{% url 'registration:login' %}">Login</a> | <a href="{% url 'registration:register' %}">Register</a></h9>
+        {% endif %}
     </nav>
 </div>
 
-{% block body %}ç
+{% block body %}
 
 {% endblock %}
 

@@ -36,10 +36,6 @@ def edit_profile(request):
         return render(request, 'registration/edit_profile.html', args)
 
 
-def index(request):
-    return render(request, 'registration/index.html', {'nbar': 'index'})
-
-
 def login(request):
     return redirect('/accounts/login')
 
