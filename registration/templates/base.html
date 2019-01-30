@@ -2,7 +2,8 @@
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'registration/css/bootstrap.min.css' %}">
     {% block head %}
     <title>Calderón</title>
@@ -12,35 +13,64 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'query:index' %}">
+                    <img src="{% static 'registration/images/calderon.jpg' %}" width="50" height="50" alt="">
+                    Calderón
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                          data-target="#navbar-center"
+                          aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="text">Menu</span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div> <!--navbar-header-->
+            <div class="collapse navbar-collapse" id="navbar-center">
+                <ul class="nav navbar-nav mx-auto">
+                    <li class="{% if nbar == 'index' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'query:index' %}">Home</a>
+                    </li>
+                    <li class="{% if nbar == 'query' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'query:query' %}">Query</a>
+                    </li>
+                    <li class="{% if nbar == 'about' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'query:about' %}">About</a>
+                    </li>
+                    <li>
+                        <a class="nav-link">:::</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="{% if nbar == 'profile' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{%url 'registration:view_profile' %}">Profile ({{ user.username }})</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{%url 'logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="{% if nbar == 'login' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'registration:login' %}">Login</a>
+                    </li>
+                    <li class="{% if nbar == 'register' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'registration:register' %}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
 
-        <a class="navbar-brand" href="{% url 'query:index' %}">
-            <img src="{% static 'registration/images/calderon.jpg' %}" width="50" height="50" alt="">
-            Calderón
-        </a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="{% if nbar == 'index' %}nav-item active{% endif %}">
-                    <a class="nav-link" href="{% url 'query:index' %}">Home</a>
-                </li>
-                <li class="{% if nbar == 'query' %}nav-item active{% endif %}">
-                    <a class="nav-link" href="{% url 'query:query' %}">Query</a>
-                </li>
-                <li class="{% if nbar == 'about' %}nav-item active{% endif %}">
-                    <a class="nav-link" href="{% url 'query:about' %}">About</a>
-                </li>
-            </ul>
-        </div>
-        {% if user.is_authenticated %}
-        <h9>Welcome <a href="{%url 'registration:view_profile' %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">logout</a></h9>
-        {% else %}
-        <h9><a href="{% url 'registration:login' %}">Login</a> | <a href="{% url 'registration:register' %}">Register</a></h9>
-        {% endif %}
+            </div> <!-- navbar-collapse collapse-->
+
+
+        </div> <!--container-fluid-->
     </nav>
-</div>
+</div> <!--container-->
 
 {% block body %}
 
 {% endblock %}
 
 </body>
+
+    <script src="{% static 'registration/js/jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'registration/js/bootstrap.min.js' %}"></script>
 </html>

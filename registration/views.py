@@ -37,20 +37,22 @@ def edit_profile(request):
 
 
 def login(request):
-    return redirect('/accounts/login')
+    args = {'nbar': 'login'}
+    return redirect('/accounts/login', args)
 
 
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        args = {'nbar': 'register'}
         if form.is_valid():
             form.save()
-            return redirect('registration:index')
+            return redirect('query:index', args)
         else:
-            return redirect('registration:register')
+            return redirect('registration:register', args)
     elif request.method == "GET":
         form = RegistrationForm()
-        args = {'form': form}
+        args = {'form': form, 'nbar': 'register'}
         return render(request, 'registration/registration_form.html', args)
 
 
@@ -60,6 +62,6 @@ def reset_password(request):
 
 @login_required
 def view_profile(request):
-    args = {'user': request.user}
+    args = {'user': request.user, 'nbar': 'profile'}
     return render(request, 'registration/profile.html', args)
 
