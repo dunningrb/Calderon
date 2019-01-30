@@ -38,6 +38,9 @@
                     <li class="{% if nbar == 'about' %}nav-item active{% endif %}">
                         <a class="nav-link" href="{% url 'query:about' %}">About</a>
                     </li>
+                    <li class="{% if nbar == 'network' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'registration:network' %}">Network</a>
+                    </li>
                     <li>
                         <a class="nav-link">:::</a>
                     </li>

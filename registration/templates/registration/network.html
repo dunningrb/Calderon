@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Calderón Users</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin-top: 50px">
+    <h3>Calderón Users</h3>
+
+    <p>The following list shows registered Calderón users.</p>
+
+    <ul>
+        {% for user in users %}
+            <li>{{ user.get_full_name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

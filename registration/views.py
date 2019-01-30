@@ -1,13 +1,23 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+from django.views.generic import TemplateView
 from .forms import RegistrationForm, EditProfileForm
 
 
-@login_required
-def change_password(request):
-    if request.method == "POST":
+class ChangePasswordView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/change_password.html'
+
+    def get(self, request):
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form}
+        print(f"form: {form}; args: {args}")
+        return render(request, self.template_name, args)
+
+    def post(self, request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
@@ -15,53 +25,66 @@ def change_password(request):
             return redirect('registration:view_profile')
         else:
             return redirect('registration:change_password')
-    elif request.method == "GET":
-        form = PasswordChangeForm(user=request.user)
+
+
+class EditProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/edit_profile.html'
+
+    def get(self, request):
+        form = EditProfileForm(instance=request.user)
         args = {'form': form}
-        return render(request, 'registration/change_password.html', args)
+        return render(request, self.template_name, args)
 
-
-@login_required
-def edit_profile(request):
-    if request.method == "POST":
+    def post(self, request):
         form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('registration:view_profile')
         else:
             return redirect('registration:edit_profile')
-    elif request.method == "GET":
-        form = EditProfileForm(instance=request.user)
-        args = {'form': form}
-        return render(request, 'registration/edit_profile.html', args)
 
 
-def login(request):
-    args = {'nbar': 'login'}
-    return redirect('/accounts/login', args)
+class LoginView(TemplateView):
+    def get(self, request):
+        return redirect('/accounts/login')
 
 
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        args = {'nbar': 'register'}
-        if form.is_valid():
-            form.save()
-            return redirect('query:index', args)
-        else:
-            return redirect('registration:register', args)
-    elif request.method == "GET":
+class NetworkView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/network.html'
+
+    def get(self, request):
+        users = User.objects.all()
+        args = {'nbar': 'network', 'users': users}
+        return render(request, self.template_name, args)
+
+
+class RegisterView(TemplateView):
+    template_name = 'registration/registration_form.html'
+
+    def get(self, request):
         form = RegistrationForm()
         args = {'form': form, 'nbar': 'register'}
-        return render(request, 'registration/registration_form.html', args)
+        return render(request, self.template_name, args)
+
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('query:index')
+        else:
+            return redirect('registration:register')
 
 
-def reset_password(request):
-    return redirect('/accounts/password_reset')
+class ResetPasswordView(TemplateView):
+
+    def get(self, request):
+        return redirect('/accounts/password_reset')
 
 
-@login_required
-def view_profile(request):
-    args = {'user': request.user, 'nbar': 'profile'}
-    return render(request, 'registration/profile.html', args)
+class ViewProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/profile.html'
+
+    def get(self, request):
+        args = {'user': request.user, 'nbar': 'profile'}
+        return render(request, self.template_name, args)
 
