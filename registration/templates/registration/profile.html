@@ -9,24 +9,56 @@
 <div class="container" style="margin-top: 50px">
     <h3>Profile</h3>
 
-    {% if change_password %}
-    <p>{{ change_password }}</p>
-    {% endif %}
+    <!--{% if change_password %}-->
+    <!--<p>{{ change_password }}</p>-->
+    <!--{% endif %}-->
 
     <p>Username: {{ user.username }}</p>
     <p>First name: {{ user.first_name }}</p>
     <p>Last name: {{ user.last_name }}</p>
     <p>Email address: {{ user.email }}</p>
+
     {% if user == requesting_user %}
-    <p>
-        <a href="{% url 'registration:edit_profile' %}">Edit Profile</a> | <a
-            href="{% url 'registration:change_password' %}">Change Password</a>
-    </p>
-    {% else %}
-    <p>
-        <a href="{% url 'registration:view_profile' %}">View Your Own Profile Page</a>
-    </p>
-    {% endif %}
+        {% if connections %}
+            <h4>Connections</h4>
+            <ul>
+                {% for connection in connections %}
+                <li>
+                    <a href="{% url 'registration:view_profile_with_primary_key' pk=connection.pk %}">
+                        {{ connection }}
+                    </a>
+                    <a href="{% url 'registration:connections' operation='remove' pk=connection.pk %}">
+                        <button type="button" class="btn btn-link">(Remove Connection)</button>
+                    </a>
+                </li>
+                {% endfor %} <!--connection in connections-->
+            </ul>
+        {% endif %} <!--if connections-->
+        <p>
+            <a href="{% url 'registration:edit_profile' %}">Edit Profile</a> |
+            <a href="{% url 'registration:change_password' %}">Change Password</a>
+        </p>
+    {% elif user != requesting_user %} <!--user is not requesting_user-->
+        {% if connections %}
+            {% if user in connections %}
+                <p>
+                    <a href="{% url 'registration:connections' operation='remove' pk=user.pk %}">
+                        <button type="button" class="btn btn-warning">Remove Connection</button>
+                    </a>
+                </p>
+            {% else %} <!--user is not in connections-->
+                <p>
+                    <a href="{% url 'registration:connections' operation='add' pk=user.pk %}">
+                        <button type="button" class="btn btn-success">Add Connection</button>
+                    </a>
+                </p>
+            {% endif %} <!--user in connections-->
+        {$ endif %} <!--if connections-->
+        <p>
+            <a href="{% url 'registration:view_profile' %}">View Your Own Profile Page</a>
+        </p>
+    {% endif %} <!--if user is requesting_user-->
+    {% endif %} <!--???-->
 </div>
 
 {% endblock %}

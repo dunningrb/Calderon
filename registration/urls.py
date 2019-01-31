@@ -1,12 +1,20 @@
 from django.urls import path
 from registration.views import (
-    LoginView, ChangePasswordView, EditProfileView, NetworkView, RegisterView, ResetPasswordView, ViewProfileView
+    ChangePasswordView,
+    ConnectionsView,
+    EditProfileView,
+    LoginView,
+    NetworkView,
+    RegisterView,
+    ResetPasswordView,
+    ViewProfileView
 )
 
 app_name = 'registration'
 
 urlpatterns = [
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
+    path('connections/(<operation>)/(<pk>)', ConnectionsView.as_view(), name='connections'),
     path('login/', LoginView.as_view(), name='login'),
     path('network/', NetworkView.as_view(), name='network'),
     path('password/', ChangePasswordView.as_view(), name='change_password'),

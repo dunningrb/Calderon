@@ -14,7 +14,18 @@
     <ul>
         {% for user in users %}
             <li>
-                <a href="{% url 'registration:view_profile_with_primary_key' pk=user.pk %}">{{ user.get_full_name }}
+                <a href="{% url 'registration:view_profile_with_primary_key' pk=user.pk %}">
+                    {{ user.get_full_name }}
+                </a>
+                {% if not user in connections %}
+                <a href="{% url 'registration:connections' operation='add' pk=user.pk %}">
+                    <button type="button" class="btn btn-link">(Add Connection)</button>
+                </a>
+                {% else %}
+                <a href="{% url 'registration:connections' operation='remove' pk=user.pk %}">
+                    <button type="button" class="btn btn-link">(Remove Connection)</button>
+                </a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
