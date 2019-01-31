@@ -17,10 +17,16 @@
     <p>First name: {{ user.first_name }}</p>
     <p>Last name: {{ user.last_name }}</p>
     <p>Email address: {{ user.email }}</p>
+    {% if user == requesting_user %}
     <p>
         <a href="{% url 'registration:edit_profile' %}">Edit Profile</a> | <a
             href="{% url 'registration:change_password' %}">Change Password</a>
     </p>
+    {% else %}
+    <p>
+        <a href="{% url 'registration:view_profile' %}">View Your Own Profile Page</a>
+    </p>
+    {% endif %}
 </div>
 
 {% endblock %}

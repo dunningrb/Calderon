@@ -84,7 +84,8 @@ class ResetPasswordView(TemplateView):
 class ViewProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'registration/profile.html'
 
-    def get(self, request):
-        args = {'user': request.user, 'nbar': 'profile'}
+    def get(self, request, pk=None):
+        user = request.user if not pk else User.objects.get(pk=pk)
+        args = {'user': user, 'requesting_user': request.user, 'nbar': 'profile'}
         return render(request, self.template_name, args)
 
